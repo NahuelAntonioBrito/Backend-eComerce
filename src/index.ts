@@ -10,6 +10,23 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.use("/products", productRouter);
-app.listen(port, () => {
-  console.log(`Server is running at http://localhost:${port}`);
-});
+
+async function startServer() {
+  try {
+    await mongoose.connect(
+      "mongodb+srv://britonahuelantonio:code123@cluster0.a1kecug.mongodb.net/",
+      {
+        dbName: "e-comerce",
+      }
+    );
+    console.log("Connected to MongoDB");
+
+    app.listen(port, () => {
+      console.log(`Server is running at http://localhost:${port}`);
+    });
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+startServer();
