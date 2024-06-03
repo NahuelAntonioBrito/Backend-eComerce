@@ -140,7 +140,7 @@ export const products = [
     category: "Comics",
   },
   {
-    id: 1,
+    id: 11,
     title: "Spiderman 2",
     description:
       "Spider-Men, Peter Parker y Miles Morales, regresan para una nueva y emocionante aventura en la aclamada franquicia de Marvel's Spider-Man. Balancear, saltar y utilizar las nuevas Alas Web para viajar a través de la Nueva York de Marvel, cambiando rápidamente entre Peter Parker y Miles Morales para experimentar diferentes historias y nuevos poderes épicos, mientras el icónico villano Venom amenaza con destruir sus vidas, su ciudad y los que aman. ",
