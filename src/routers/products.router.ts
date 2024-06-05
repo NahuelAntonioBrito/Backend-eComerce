@@ -43,12 +43,11 @@ router.get("/title/:title", async (req: Request, res: Response) => {
 
 router.post("/", async (req: Request, res: Response) => {
   try {
-    const newProduct = req.body;
-    const productGenerated = new productModel(newProduct);
-    await productGenerated.save();
+    const newProduct = new productModel(req.body);
+    const savedProduct = await newProduct.save();
     res.status(201).json({
       message: "Product created successfully",
-      product: productGenerated,
+      product: savedProduct,
     });
   } catch (error) {
     console.error(error);
