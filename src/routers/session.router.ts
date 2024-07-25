@@ -1,8 +1,10 @@
+// src/routers/session.router.ts
 import { Request, Response, Router } from "express";
 import userModel, { IUser } from "../models/user.model";
 import Joi from "joi";
 import { auth } from "../middlewares/auth.middleware";
 import { createHash, isValidPassword } from "../utils";
+import { SessionUser } from "../types/session";
 
 const router = Router();
 
@@ -14,6 +16,7 @@ const userSchema = Joi.object({
   password: Joi.string().min(6).required(),
   role: Joi.string().valid("user", "admin", "premium").default("user"),
 });
+
 router.post("/register", async (req: Request, res: Response) => {
   try {
     const { error, value } = userSchema.validate(req.body);
@@ -50,7 +53,7 @@ router.post("/register", async (req: Request, res: Response) => {
 router.post("/login", async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
-    const user = await userModel.findOne({ email }).exec();
+    const user: IUser | null = await userModel.findOne({ email }).exec();
     if (!user) {
       return res.status(401).json({ message: "Error on email or password" });
     }
@@ -61,19 +64,19 @@ router.post("/login", async (req: Request, res: Response) => {
       return res.status(401).json({ message: "Error on email or password" });
     }
 
-    req.session.user = {
+    const sessionUser: SessionUser = {
       userName: user.firstName + " " + user.lastName,
       role: user.role,
+      email: user.email,
+      age: user.age,
+      _id: user._id, // Convertir a string
     };
+
+    req.session.user = sessionUser;
 
     res.status(200).json({
       message: "Login successfully",
-      user: {
-        userName: user.firstName + " " + user.lastName,
-        role: user.role,
-        email: user.email,
-        age: user.age,
-      },
+      user: sessionUser,
     });
   } catch (error) {
     console.error("Error fetching session:", error);

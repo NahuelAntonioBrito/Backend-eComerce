@@ -29,10 +29,9 @@ userSchema.pre<IUser>("save", async function (next) {
 
   try {
     this.password = await argon2.hash(this.password);
-    console.log("Generated hash:", this.password); // Añadir este console.log para depurar
     next();
   } catch (err) {
-    next(err as mongoose.CallbackError); // Propaga el error si ocurre
+    next(err as mongoose.CallbackError);
   }
 });
 

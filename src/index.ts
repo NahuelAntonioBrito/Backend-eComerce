@@ -5,12 +5,18 @@ import mongoose from "mongoose";
 import MongoStore from "connect-mongo";
 import productRouter from "./routers/products.router";
 import sessionRouter from "./routers/session.router";
+import userRouter from "./routers/users.router";
 
 const app = express();
 const port = 3000;
 
 // Configuración de middlewares
-app.use(cors()); // Habilitar CORS para todas las rutas
+app.use(
+  cors({
+    origin: "http://localhost:5173", // Origen de tu frontend
+    credentials: true, // Permitir el uso de credenciales
+  })
+);
 app.use(express.json());
 
 // Configuración de sesión con MongoDB
@@ -36,6 +42,7 @@ app.get("/", (req: Request, res: Response) => {
 
 app.use("/products", productRouter);
 app.use("/sessions", sessionRouter);
+app.use("/users", userRouter);
 
 // Función para iniciar el servidor
 async function startServer() {
